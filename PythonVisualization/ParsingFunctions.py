@@ -27,6 +27,7 @@ def parse_decomposition(directory):
 	"""
 	if not os.path.isfile(directory + '/decomp'):
 		print "did not find decomp at %s" %os.getcwd()
+		return {}
 	with open(directory + '/decomp', 'r') as f:
 		inputFileName = f.readline().replace('\n','')
 		num_variables_and_dimension = f.readline().replace('\n', '').split(' ')
@@ -78,7 +79,7 @@ def parse_decomposition(directory):
 		for ii in xrange(centerSize):
 			center_data = f.readline().replace('\n', '').split(' ')
 			center.append(complex(float(center_data[0]), float(center_data[1])))
-		return [Pi, Patch_Vectors, radius, center]
+		return {'input file name':inputFileName,'Pi info': Pi, 'Patch Vectors':Patch_Vectors, "radius": radius, "center":center}
 
 
 def parse_Surf(directory):
@@ -125,6 +126,7 @@ def parse_Faces(directory):
 	"""
 	if not os.path.isfile(directory + '/F.faces'):
 		print "F.faces file not found in current directory: %s" %os.getcwd()
+		return
 	with open(directory + '/F.faces') as f:
 		num_faces = int(f.readline().replace('\n', ''))
 		faces = [{} for i in xrange(num_faces)]
@@ -158,4 +160,49 @@ def parse_Faces(directory):
 				faces[ii]['right'] = [int(i) for i in f.readline().replace(' \n', '').split(' ')]
 
 	return faces 
+
+
+def parse_Edges(directory):
+	if not os.path.isfile(directory + '/E.edge'):
+		print "E.edge file not found in current directory: %s" %os.getcwd()
+		return {'number of edges': 0, 'edges': []}
+
+	with open(directory + '/E.edge', 'r') as f:
+		curves = {}
+		curves['number of edges'] = int(f.readline().replace('\n', ''))
+		curves['edges'] = [ [0,0,0] for i in xrange(curves['number of edges'])]
+		for ii in xrange(curves['number of edges']):
+			edges = f.readline()
+			while edges == '\n':
+				edges = f.readline()
+			edges = edges.replace(' \n', '').split(' ')
+			for jj in range(3):
+				curves['edges'][ii][jj] = int(edges[jj]) + 1
+
+	return curves
+
+
+
+def parse_Curve_Sampler(directory):
+	filename = directory + '/samp.curvesamp'
+	if not os.path.isfile(filename):
+		return {'sampler_data':[]}
+	with open(filename, 'r') as f:
+		## Finish function when you have an example with curve sampler files
+		sampler_data = {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
