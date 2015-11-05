@@ -1,5 +1,5 @@
 import os
-def parse_directory_name(directory_name):
+def parse_directory_name(directory_name = 'Dir_Name'):
 	""" Parses file that contains the directory name, the MPtype, and the dimension
 	 Returns a list [directory, MPtype, dimension]
 	"""
@@ -109,7 +109,7 @@ def parse_Surf(directory):
 				singular_curve_multiplicites[ii][jj] = int(multiplicites[index])
 				index += 1
 
-	return [num_faces, num_edges, num_midpoint_slices, num_critical_point_slices, singular_curve_multiplicites]
+	return [num_faces, num_edges, num_midpoint_slices, num_critical_point_slices,num_singular_curves, singular_curve_multiplicites]
 
 
 
@@ -193,9 +193,13 @@ def parse_Curve_Sampler(directory):
 
 
 
-
-
-
+def parse_Surface_Sampler(directory):
+	filename = directory + '/samp.surfsamp'
+	if not os.path.isfile(filename):
+		return []
+	else:
+		pass
+		# Finish this when running an example where a surface sample is produced
 
 
 
