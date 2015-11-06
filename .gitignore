@@ -19,7 +19,7 @@ member_points
 main_data
 midpath_data
 preproc_data
-BRinfo*
+#BRinfo*
 Dir_Name
 test/*.eps
 test/*/*.eps
