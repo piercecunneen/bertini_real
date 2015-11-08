@@ -79,7 +79,7 @@ def parse_decomposition(directory):
 		for ii in xrange(centerSize):
 			center_data = f.readline().replace('\n', '').split(' ')
 			center.append(complex(float(center_data[0]), float(center_data[1])))
-		return {'input file name':inputFileName,'Pi info': Pi, 'Patch Vectors':Patch_Vectors, "radius": radius, "center":center}
+		return {'input file name':inputFileName,'Pi info': Pi, 'Patch Vectors':Patch_Vectors, "radius": radius, "center":center, "num patches":num_patches}
 
 
 def parse_Surf(directory):
@@ -186,10 +186,11 @@ def parse_Edges(directory):
 def parse_Curve_Sampler(directory):
 	filename = directory + '/samp.curvesamp'
 	if not os.path.isfile(filename):
-		return {'sampler_data':[]}
+		return []
 	with open(filename, 'r') as f:
 		## Finish function when you have an example with curve sampler files
-		sampler_data = {}
+		sampler_data = []
+		return sampler_data
 
 
 

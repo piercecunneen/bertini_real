@@ -43,6 +43,7 @@ class Surface(object):
 		self.patch = decomposition_data['Patch Vectors']
 		self.radius = decomposition_data["radius"]
 		self.center = decomposition_data["center"]
+		self.num_patches = decomposition_data['num patches']
 	def parse_surf(self, directory):
 		surf_data = ParsingFunctions.parse_Surf(directory)
 		self.num_faces = surf_data[0]
@@ -102,12 +103,12 @@ class Curve(Surface):
 		self.num_variables = 0
 		self.dimension = 0
 		self.pi = []
-		self.num_patches = []
+		self.num_patches = 0
 		self.patch  = {}
 		self.radius = 0
 		self.center_size = 0
 		self.center = []
-		self.curve_sampler_data = []
+		self.sampler_data = []
 
 		# automatically parse data files to gather curve data
 		self.parse_decomp(self.directory)
