@@ -79,7 +79,7 @@ def parse_decomposition(directory):
 		for ii in xrange(centerSize):
 			center_data = f.readline().replace('\n', '').split(' ')
 			center.append(complex(float(center_data[0]), float(center_data[1])))
-		return {'input file name':inputFileName,'Pi info': Pi, 'Patch Vectors':Patch_Vectors, "radius": radius, "center":center, "num patches":num_patches}
+		return {'num variables': num_variables,'input file name':inputFileName,'Pi info': Pi, 'Patch Vectors':Patch_Vectors, "radius": radius, "center":center, "num patches":num_patches}
 
 
 def parse_Surf(directory):
@@ -147,14 +147,14 @@ def parse_Faces(directory):
 
 			faces[ii]['num left'] = int(f.readline().replace('\n', ''))
 			if faces[ii]['num left'] == 0:
-				faces[ii]['left'] = None
+				faces[ii]['left'] = []
 				f.readline()
 			else:
 				faces[ii]['left'] = [int(i) for i in f.readline().replace(' \n', '').split(' ')]
 
 			faces[ii]['num right'] = int(f.readline().replace('\n', ''))
 			if faces[ii]['num right'] == 0:
-				faces[ii]['right'] = None
+				faces[ii]['right'] = []
 				f.readline()
 			else:
 				faces[ii]['right'] = [int(i) for i in f.readline().replace(' \n', '').split(' ')]

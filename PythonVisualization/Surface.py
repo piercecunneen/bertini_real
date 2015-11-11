@@ -25,7 +25,7 @@ class Surface(object):
 		self.sphere_curve = []
 		self.singular_curves = []
 		self.singular_names = []
-		self.surface_sampler_data = []   # store all surface_sampler data
+		self.sampler_data = []   # store all surface_sampler data
 		self.input = None
 
 		# automatically parse data files to gather curve data
@@ -44,6 +44,7 @@ class Surface(object):
 		self.radius = decomposition_data["radius"]
 		self.center = decomposition_data["center"]
 		self.num_patches = decomposition_data['num patches']
+		self.num_variables = decomposition_data['num variables']
 	def parse_surf(self, directory):
 		surf_data = ParsingFunctions.parse_Surf(directory)
 		self.num_faces = surf_data[0]
@@ -75,7 +76,7 @@ class Surface(object):
 
 
 	def gather_surface_samples(self, directory):
-		self.surface_sampler_data = ParsingFunctions.parse_Surface_Sampler(directory)
+		self.sampler_data = ParsingFunctions.parse_Surface_Sampler(directory)
 
 	def read_input(self, directory):
 		filename = directory + '/' + self.inputfilename
@@ -123,7 +124,7 @@ class Curve(Surface):
 		self.edges = edge_data['edges']
 
 	def parse_curve_sampler(self, directory):
-		self.curve_sampler_data = ParsingFunctions.parse_Curve_Sampler(directory)
+		self.sampler_data = ParsingFunctions.parse_Curve_Sampler(directory)
 	
 
 
