@@ -1,2 +1,4 @@
 Finish Dehomonogize function
 Complete sampler_data parser 
+
+Write get_user_indices

@@ -1,10 +1,11 @@
 from BRInfo import BRInfo
+from findConstantVars import find_constant_vars
 import sys
 
 class BR_Plotter(object):
 
 	def __init__(self, command_line_arguments):
-		self.BR_Object = BRInfo()
+		self.br_object = BRInfo()
 		self.window = [20,20,640,640]
 		self.figures = []
 		self.axes = []
@@ -17,7 +18,7 @@ class BR_Plotter(object):
 		self.checkboxes = []
 
 		self.scene = []
-		self.dimension = -1
+		self.dimension = self.br_object.dimension
 		self.indices = []
 		self.options = {}
 		self.is_bounded = []
@@ -25,8 +26,7 @@ class BR_Plotter(object):
 		self.set_default_options()
 		if command_line_arguments:
 			self.set_options(command_line_arguments)
-		else:
-			print "No command line arguments"
+		self.get_indices()
 	def set_default_options(self):
 		""" Sets the default options for the BR_Plotter
 		Called automatically upon creation of BR_Plotter instance"""
@@ -208,36 +208,50 @@ class BR_Plotter(object):
 				print "Unexpected option %s" %option
 				sys.exit()
 			counter += 1
+
+
 	def get_indices(self):
 		"""set up the plotting indices -- which data to plot"""
 
-		if self.BR_Object.dimension == 1:
+		if self.br_object.dimension == 1:
 			# Curve, not a Surface!!!
-			if self.BR_Object.sampler_data == []:
-				number_of_vertices = len(self.BR_Object.vertices)
+			if self.br_object.sampler_data == []:
+				number_of_vertices = len(self.br_object.vertices)
 				temporary_data = [ [] for i in xrange(number_of_vertices)]
 				for ii in xrange(number_of_vertices):
-					num_variables = self.BR_Object.curve.num_variables
-					temporary_data[ii] = self.BR_Object.vertices[ii]['point'][0:num_variables-1]	
+					num_variables = self.br_object.curve.num_variables
+					temporary_data[ii] = self.br_object.vertices[ii]['point'][0:num_variables-1]	
 			else:
 				# sampler_data exists
 				counter = 0
-				temporary_data = [[] for i in xrange(BR_Object.curve.num_variables - 1)]
-				for ii in xrange(self.BR_Object.curve.num_edges):
-					for jj in xrange(self.BR_Object.curve.sampler_data.sample_sizes[ii]):
-						sample_data = self.BR_Object.curve.sampler_data.samples[jj]
-						temporary_data[counter] = self.BR_Object.vertices[sample_data + 1]['point']
+				temporary_data = [[] for i in xrange(br_object.curve.num_variables - 1)]
+				for ii in xrange(self.br_object.curve.num_edges):
+					for jj in xrange(self.br_object.curve.sampler_data.sample_sizes[ii]):
+						sample_data = self.br_object.curve.sampler_data.samples[jj]
+						temporary_data[counter] = self.br_object.vertices[sample_data + 1]['point']
 						counter += 1
 
 		else:
 			# Surface, not a Curve!!!
-			num_points = min(1000, len(self.BR_Object.vertices))
+			num_points = min(1000, len(self.br_object.vertices))
 
 			temporary_data = [ [] for i in xrange(num_points)]
 
 			for ii in xrange(num_points):
-				num_variables = self.BR_Object.surface.num_variables
-				temporary_data[ii] = 3
+				num_variables = self.br_object.surface.num_variables
+				temporary_data[ii] = self.br_object.vertices[ii]['point'][:num_variables-1]
+
+		indices_of_nonconst_cols = find_constant_vars(temporary_data)
+		if len(indices_of_nonconst_cols) >= 4:
+			pass # Where get_user_indicies should go
+		else:
+			if self.dimension == 1:
+				self.indices = indices_of_nonconst_cols
+			else:
+				if len(indices_of_nonconst_cols) == 3:
+					self.indices = indices_of_nonconst_cols
+				else:
+					pass
 
 
 		
